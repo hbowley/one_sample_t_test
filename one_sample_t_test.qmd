@@ -1,0 +1,32 @@
+---
+title: "One sample/Paired t-test"
+format: html
+author:
+  - name: Hannah Bowley
+  - name: Micaela Lembo
+toc: true
+editor: visual
+theme: lux
+---
+
+## One Sample Paired t-test
+
+One sample paired t-test is used to compare the means between two related groups. 
+
+### Assumptions
+1. Are the two samples paired?
+2. Is this a large sample?
+3. Is the data normally distributed?
+
+#### t-test statistic
+$$t=\frac{m}{\frac{s}{\sqrt{n}}}$$
+
+### Load in libraries
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+library(tidyverse)
+library(gapminder)
+```
+
