@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.335">
+<meta name="generator" content="quarto-1.3.353">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -19,9 +19,10 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -48,43 +49,13 @@ pre.numberSource code > span > a:first-child::before
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
     padding: 0 4px; width: 4em;
-    color: #aaaaaa;
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
 div.sourceCode
   {   }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -99,6 +70,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link href="one_sample_t_test_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="one_sample_t_test_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 </head>
@@ -113,8 +85,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul>
   <li><a href="#one-sample-paired-t-test" id="toc-one-sample-paired-t-test" class="nav-link active" data-scroll-target="#one-sample-paired-t-test">One Sample Paired t-test</a>
   <ul class="collapse">
-  <li><a href="#assumptions" id="toc-assumptions" class="nav-link" data-scroll-target="#assumptions">Assumptions</a></li>
+  <li><a href="#install-packages" id="toc-install-packages" class="nav-link" data-scroll-target="#install-packages">Install packages</a></li>
   <li><a href="#load-in-libraries" id="toc-load-in-libraries" class="nav-link" data-scroll-target="#load-in-libraries">Load in libraries</a></li>
+  <li><a href="#steps-for-one-sample-paired-t-test" id="toc-steps-for-one-sample-paired-t-test" class="nav-link" data-scroll-target="#steps-for-one-sample-paired-t-test">Steps for one sample paired t-test</a></li>
+  <li><a href="#looking-at-data" id="toc-looking-at-data" class="nav-link" data-scroll-target="#looking-at-data">Looking at data</a></li>
+  <li><a href="#form-our-hypothesis" id="toc-form-our-hypothesis" class="nav-link" data-scroll-target="#form-our-hypothesis">Form our hypothesis:</a></li>
+  <li><a href="#t-test-using-base-r" id="toc-t-test-using-base-r" class="nav-link" data-scroll-target="#t-test-using-base-r">T-test using base r</a></li>
+  <li><a href="#t-test-result" id="toc-t-test-result" class="nav-link" data-scroll-target="#t-test-result">T-test result</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -147,25 +124,133 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <section id="one-sample-paired-t-test" class="level2">
 <h2 class="anchored" data-anchor-id="one-sample-paired-t-test">One Sample Paired t-test</h2>
-<p>One sample paired t-test is used to compare the means between two related groups.</p>
-<section id="assumptions" class="level3">
-<h3 class="anchored" data-anchor-id="assumptions">Assumptions</h3>
-<ol type="1">
-<li>Are the two samples paired?</li>
-<li>Is this a large sample?</li>
-<li>Is the data normally distributed?</li>
-</ol>
+<ul>
+<li>One sample paired t-test is used to compare the means between two related groups.</li>
+<li>Typically used to determine if the mean difference between the two groups is 0</li>
+<li>Since this is a paired t-test, this means that each subject is measured twice
+<ul>
+<li>Which makes a paired observation</li>
+</ul></li>
+<li>This type of statistical test is usually used in case-control or repeated measures studies</li>
+</ul>
 <section id="t-test-statistic" class="level4">
-<h4 class="anchored" data-anchor-id="t-test-statistic">t-test statistic</h4>
+<h4 class="anchored" data-anchor-id="t-test-statistic">T-test statistic</h4>
 <p><span class="math display">\[t=\frac{m}{\frac{s}{\sqrt{n}}}\]</span></p>
 </section>
+<section id="install-packages" class="level3">
+<h3 class="anchored" data-anchor-id="install-packages">Install packages</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("datarium")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 <section id="load-in-libraries" class="level3">
 <h3 class="anchored" data-anchor-id="load-in-libraries">Load in libraries</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gapminder)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(datarium)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
+<section id="steps-for-one-sample-paired-t-test" class="level3">
+<h3 class="anchored" data-anchor-id="steps-for-one-sample-paired-t-test">Steps for one sample paired t-test</h3>
+<p>Know what the assumptions are:</p>
+<ol type="1">
+<li>Are the two samples paired?<br>
+</li>
+<li>Is this a large sample?<br>
+</li>
+<li>Is the data normally distributed?<br>
+</li>
+<li>Is the dependent variable numeric or continuous?<br>
+</li>
+<li>Are the observations independent of each other?</li>
+</ol>
+<p>Form your hypothesis: Null hypothesis: Assumes that the true mean difference is 0 There is no difference in mean between the 2 groups Alternative hypothesis: The true is mean difference is not 0</p>
+</section>
+<section id="looking-at-data" class="level3">
+<h3 class="anchored" data-anchor-id="looking-at-data">Looking at data</h3>
+<p>Contains the weight of 10 mice before and after treatment</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(mice2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  id before after
+1  1  187.2 429.5
+2  2  194.2 404.4
+3  3  231.7 405.6
+4  4  200.5 397.2
+5  5  201.7 377.9
+6  6  235.0 445.8</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(mice2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   10 obs. of  3 variables:
+ $ id    : int  1 2 3 4 5 6 7 8 9 10
+ $ before: num  187 194 232 200 202 ...
+ $ after : num  430 404 406 397 378 ...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(mice2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   id before after
+1   1  187.2 429.5
+2   2  194.2 404.4
+3   3  231.7 405.6
+4   4  200.5 397.2
+5   5  201.7 377.9
+6   6  235.0 445.8
+7   7  208.7 408.4
+8   8  172.4 337.0
+9   9  184.6 414.3
+10 10  189.6 380.3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mice2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       id            before          after      
+ Min.   : 1.00   Min.   :172.4   Min.   :337.0  
+ 1st Qu.: 3.25   1st Qu.:187.8   1st Qu.:384.5  
+ Median : 5.50   Median :197.3   Median :405.0  
+ Mean   : 5.50   Mean   :200.6   Mean   :400.0  
+ 3rd Qu.: 7.75   3rd Qu.:206.9   3rd Qu.:412.8  
+ Max.   :10.00   Max.   :235.0   Max.   :445.8  </code></pre>
+</div>
+</div>
+</section>
+<section id="form-our-hypothesis" class="level3">
+<h3 class="anchored" data-anchor-id="form-our-hypothesis">Form our hypothesis:</h3>
+<p>Null hypothesis: There is no difference in the weight of the mice before and after treatment Alternative hypothesis: The treatment affected the weight of the mice</p>
+</section>
+<section id="t-test-using-base-r" class="level3">
+<h3 class="anchored" data-anchor-id="t-test-using-base-r">T-test using base r</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Weight before and after need to be in different vectors in order to see</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># the difference in the t-test</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>before <span class="ot">&lt;-</span> mice2<span class="sc">$</span>before</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>after <span class="ot">&lt;-</span> mice2<span class="sc">$</span>after</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Computing t-test </span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>Mice.test <span class="ot">&lt;-</span> <span class="fu">t.test</span>(before, after, <span class="at">paired =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>Mice.test</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Paired t-test
+
+data:  before and after
+t = -25.546, df = 9, p-value = 1.039e-09
+alternative hypothesis: true mean difference is not equal to 0
+95 percent confidence interval:
+ -217.1442 -181.8158
+sample estimates:
+mean difference 
+        -199.48 </code></pre>
+</div>
+</div>
+</section>
+<section id="t-test-result" class="level3">
+<h3 class="anchored" data-anchor-id="t-test-result">T-test result</h3>
+<p>t-test (t) statistic was found to be (t=-25.546)</p>
+<p>Degree of freedom (df = 9)</p>
+<p>Level of significance (p-value = 1.039e-09 )</p>
+<p>Confidence interval (CI) (-217.1442,-181.8158)</p>
+<p>P-value was found to be 1.039e-09, which is less than 0.05, meaning that we reject the null hypothesis The average weight of the mice before the treatment is significantly different from the average weight after the treatment.</p>
 </section>
 </section>
 
@@ -198,9 +283,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -265,6 +364,92 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {
