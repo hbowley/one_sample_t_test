@@ -110,6 +110,8 @@ P-value was found to be 1.039e-09, which is less than 0.05, meaning that we reje
 
 ## T test using tidymodels package
 
+![image](image.png)
+
 ### Install and Load tidymodels package
 
 ```{r}

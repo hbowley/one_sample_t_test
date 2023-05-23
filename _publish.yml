@@ -1,0 +1,4 @@
+- source: one_sample_t_test.qmd
+  quarto-pub:
+    - id: 415151d5-214e-4887-b137-5303e7654b1e
+      url: 'https://hbowley.quarto.pub/one-sample-paired-t-test'
