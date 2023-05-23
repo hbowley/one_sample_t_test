@@ -53,7 +53,9 @@ Know what the assumptions are:
 4.  Is the dependent variable numeric or continuous?\
 5.  Are the observations independent of each other?
 
-Form your hypothesis: Null hypothesis: Assumes that the true mean difference is 0 There is no difference in mean between the 2 groups Alternative hypothesis: The true is mean difference is not 0
+Form your hypothesis:   
+Null hypothesis: Assumes that the true mean difference is 0 There is no difference in mean between the 2 groups  
+Alternative hypothesis: The true is mean difference is not 0
 
 ### Looking at data
 
@@ -72,7 +74,8 @@ summary(mice2)
 
 ### Form our hypothesis:
 
-Null hypothesis: There is no difference in the weight of the mice before and after treatment Alternative hypothesis: The treatment affected the weight of the mice
+Null hypothesis: There is no difference in the weight of the mice before and after treatment   
+Alternative hypothesis: The treatment affected the weight of the mice
 
 ### T-test using base r
 
@@ -104,3 +107,58 @@ Level of significance (p-value = 1.039e-09 )
 Confidence interval (CI) (-217.1442,-181.8158)
 
 P-value was found to be 1.039e-09, which is less than 0.05, meaning that we reject the null hypothesis The average weight of the mice before the treatment is significantly different from the average weight after the treatment.
+
+## T test using tidymodels package
+
+### Install and Load tidymodels package
+
+```{r}
+#| echo: true
+# install.packages("tidymodels")
+library(tidymodels)
+```
+
+### calculate test statistic
+
+```{r}
+#| echo: true
+## calculate the observed statistic
+
+observed_statistic <- mice2 %>% 
+  mutate(difference = after - before) %>% 
+  specify(response = difference) %>% 
+  calculate(stat = "mean")
+
+observed_statistic
+```
+This result of -199.48 matches the base R result that showed a mean difference of -199.48
+
+### generate the null distribution and the test statistic
+
+```{r}
+#| echo: true
+null_dist_1_sample <- mice2 %>% 
+  mutate(difference = after - before) %>% 
+  specify(response = difference) %>% 
+  hypothesize(null = "point", mu = 180) %>% 
+  generate(reps = 1000, type = "bootstrap") %>% 
+  calculate(stat = "mean") 
+
+visual <- null_dist_1_sample %>% 
+  visualize() +
+  shade_p_value(observed_statistic, direction = "two-sided")
+
+visual
+
+
+```
+### Calculate P-value
+```{r}
+#| echo: true
+p_value_1_sample <- null_dist_1_sample %>% 
+  get_p_value(obs_stat = observed_statistic,
+              direction = "two-sided")
+
+p_value_1_sample
+```
+

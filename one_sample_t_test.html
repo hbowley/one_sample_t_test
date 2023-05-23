@@ -93,6 +93,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#t-test-using-base-r" id="toc-t-test-using-base-r" class="nav-link" data-scroll-target="#t-test-using-base-r">T-test using base r</a></li>
   <li><a href="#t-test-result" id="toc-t-test-result" class="nav-link" data-scroll-target="#t-test-result">T-test result</a></li>
   </ul></li>
+  <li><a href="#t-test-using-tidymodels-package" id="toc-t-test-using-tidymodels-package" class="nav-link" data-scroll-target="#t-test-using-tidymodels-package">T test using tidymodels package</a>
+  <ul class="collapse">
+  <li><a href="#install-and-load-tidymodels-package" id="toc-install-and-load-tidymodels-package" class="nav-link" data-scroll-target="#install-and-load-tidymodels-package">Install and Load tidymodels package</a></li>
+  <li><a href="#calculate-test-statistic" id="toc-calculate-test-statistic" class="nav-link" data-scroll-target="#calculate-test-statistic">calculate test statistic</a></li>
+  <li><a href="#generate-the-null-distribution-and-the-test-statistic" id="toc-generate-the-null-distribution-and-the-test-statistic" class="nav-link" data-scroll-target="#generate-the-null-distribution-and-the-test-statistic">generate the null distribution and the test statistic</a></li>
+  <li><a href="#calculate-p-value" id="toc-calculate-p-value" class="nav-link" data-scroll-target="#calculate-p-value">Calculate P-value</a></li>
+  </ul></li>
   </ul>
 </nav>
 </div>
@@ -164,7 +171,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
 <li>Are the observations independent of each other?</li>
 </ol>
-<p>Form your hypothesis: Null hypothesis: Assumes that the true mean difference is 0 There is no difference in mean between the 2 groups Alternative hypothesis: The true is mean difference is not 0</p>
+<p>Form your hypothesis:<br>
+Null hypothesis: Assumes that the true mean difference is 0 There is no difference in mean between the 2 groups<br>
+Alternative hypothesis: The true is mean difference is not 0</p>
 </section>
 <section id="looking-at-data" class="level3">
 <h3 class="anchored" data-anchor-id="looking-at-data">Looking at data</h3>
@@ -215,7 +224,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="form-our-hypothesis" class="level3">
 <h3 class="anchored" data-anchor-id="form-our-hypothesis">Form our hypothesis:</h3>
-<p>Null hypothesis: There is no difference in the weight of the mice before and after treatment Alternative hypothesis: The treatment affected the weight of the mice</p>
+<p>Null hypothesis: There is no difference in the weight of the mice before and after treatment<br>
+Alternative hypothesis: The treatment affected the weight of the mice</p>
 </section>
 <section id="t-test-using-base-r" class="level3">
 <h3 class="anchored" data-anchor-id="t-test-using-base-r">T-test using base r</h3>
@@ -251,6 +261,94 @@ mean difference
 <p>Level of significance (p-value = 1.039e-09 )</p>
 <p>Confidence interval (CI) (-217.1442,-181.8158)</p>
 <p>P-value was found to be 1.039e-09, which is less than 0.05, meaning that we reject the null hypothesis The average weight of the mice before the treatment is significantly different from the average weight after the treatment.</p>
+</section>
+</section>
+<section id="t-test-using-tidymodels-package" class="level2">
+<h2 class="anchored" data-anchor-id="t-test-using-tidymodels-package">T test using tidymodels package</h2>
+<section id="install-and-load-tidymodels-package" class="level3">
+<h3 class="anchored" data-anchor-id="install-and-load-tidymodels-package">Install and Load tidymodels package</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("tidymodels")</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching packages ────────────────────────────────────── tidymodels 1.1.0 ──</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ broom        1.0.4     ✔ rsample      1.1.1
+✔ dials        1.2.0     ✔ tune         1.1.1
+✔ infer        1.0.4     ✔ workflows    1.1.3
+✔ modeldata    1.1.0     ✔ workflowsets 1.0.1
+✔ parsnip      1.1.0     ✔ yardstick    1.2.0
+✔ recipes      1.0.6     </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Conflicts ───────────────────────────────────────── tidymodels_conflicts() ──
+✖ scales::discard() masks purrr::discard()
+✖ dplyr::filter()   masks stats::filter()
+✖ recipes::fixed()  masks stringr::fixed()
+✖ dplyr::lag()      masks stats::lag()
+✖ yardstick::spec() masks readr::spec()
+✖ recipes::step()   masks stats::step()
+• Dig deeper into tidy modeling with R at https://www.tmwr.org</code></pre>
+</div>
+</div>
+</section>
+<section id="calculate-test-statistic" class="level3">
+<h3 class="anchored" data-anchor-id="calculate-test-statistic">calculate test statistic</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="do">## calculate the observed statistic</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>observed_statistic <span class="ot">&lt;-</span> mice2 <span class="sc">%&gt;%</span> </span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">difference =</span> after <span class="sc">-</span> before) <span class="sc">%&gt;%</span> </span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">specify</span>(<span class="at">response =</span> difference) <span class="sc">%&gt;%</span> </span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">calculate</span>(<span class="at">stat =</span> <span class="st">"mean"</span>)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>observed_statistic</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Response: difference (numeric)
+# A tibble: 1 × 1
+   stat
+  &lt;dbl&gt;
+1  199.</code></pre>
+</div>
+</div>
+<p>This result of -199.48 matches the base R result that showed a mean difference of -199.48</p>
+</section>
+<section id="generate-the-null-distribution-and-the-test-statistic" class="level3">
+<h3 class="anchored" data-anchor-id="generate-the-null-distribution-and-the-test-statistic">generate the null distribution and the test statistic</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>null_dist_1_sample <span class="ot">&lt;-</span> mice2 <span class="sc">%&gt;%</span> </span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">difference =</span> after <span class="sc">-</span> before) <span class="sc">%&gt;%</span> </span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">specify</span>(<span class="at">response =</span> difference) <span class="sc">%&gt;%</span> </span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hypothesize</span>(<span class="at">null =</span> <span class="st">"point"</span>, <span class="at">mu =</span> <span class="dv">180</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">generate</span>(<span class="at">reps =</span> <span class="dv">1000</span>, <span class="at">type =</span> <span class="st">"bootstrap"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">calculate</span>(<span class="at">stat =</span> <span class="st">"mean"</span>) </span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>visual <span class="ot">&lt;-</span> null_dist_1_sample <span class="sc">%&gt;%</span> </span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">visualize</span>() <span class="sc">+</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">shade_p_value</span>(observed_statistic, <span class="at">direction =</span> <span class="st">"two-sided"</span>)</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>visual</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="one_sample_t_test_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="calculate-p-value" class="level3">
+<h3 class="anchored" data-anchor-id="calculate-p-value">Calculate P-value</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>p_value_1_sample <span class="ot">&lt;-</span> null_dist_1_sample <span class="sc">%&gt;%</span> </span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_p_value</span>(<span class="at">obs_stat =</span> observed_statistic,</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">direction =</span> <span class="st">"two-sided"</span>)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>p_value_1_sample</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 1
+  p_value
+    &lt;dbl&gt;
+1    0.01</code></pre>
+</div>
+</div>
 </section>
 </section>
 
