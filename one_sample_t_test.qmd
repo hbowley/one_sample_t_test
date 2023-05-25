@@ -30,6 +30,8 @@ $$t=\frac{m}{\frac{s}{\sqrt{n}}}$$
 
 #install.packages("datarium")
 
+#install.packages("ggplot2")
+
 ```
 
 ### Load in libraries
@@ -39,7 +41,15 @@ $$t=\frac{m}{\frac{s}{\sqrt{n}}}$$
 #| message: false
 #| warning: false
 
+# Library that contains mice2 data
 library(datarium)
+
+# Library that is used for some statistical analysis
+library(rstatix)
+
+# Library used to graph the normality QQ plot
+library(ggplot2)
+
 library(tidyverse)
 ```
 
@@ -53,11 +63,11 @@ Know what the assumptions are:
 4.  Is the dependent variable numeric or continuous?\
 5.  Are the observations independent of each other?
 
-Form your hypothesis:   
-Null hypothesis: Assumes that the true mean difference is 0 There is no difference in mean between the 2 groups  
+Form your hypothesis:\
+Null hypothesis: Assumes that the true mean difference is 0 There is no difference in mean between the 2 groups\
 Alternative hypothesis: The true is mean difference is not 0
 
-### Looking at data
+### Calling in and looking at data
 
 Contains the weight of 10 mice before and after treatment
 
@@ -66,16 +76,99 @@ Contains the weight of 10 mice before and after treatment
 #| message: false
 #| warning: false
 
-head(mice2)
+# Bringing in the values into our environment
+# This data is in wide format
+
+data("mice2", package = "datarium")
+
+# Gives us the number of observations and the total number of variables
 str(mice2)
+
+#Shows us all the observations
 print(mice2)
-summary(mice2)
+
+
 ```
 
 ### Form our hypothesis:
 
-Null hypothesis: There is no difference in the weight of the mice before and after treatment   
+Null hypothesis: There is no difference in the weight of the mice before and after treatment\
 Alternative hypothesis: The treatment affected the weight of the mice
+
+### Transforming data to long format
+
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+
+
+mice2_long <- gather(mice2, group, weight, before:after, factor_key=TRUE)
+
+
+
+```
+
+### Summary statistics
+
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+
+# Use this to quickly look at mean and sd
+mice2_long %>%
+  group_by(group) %>%
+  get_summary_stats(weight, type = "mean_sd")
+
+
+```
+
+### Checking for outliers
+
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+
+# Mutate the original mice2 data set to include a new column that has the 
+# difference in weights before and after treatment in order to graph QQ
+# normality graph
+mice2_m <- mice2 %>% 
+  mutate(weight_diff = after - before)
+
+
+mice2_m %>% identify_outliers(weight_diff)
+
+```
+
+### Checking normality
+
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+
+mice2_m %>% shapiro_test(weight_diff) 
+```
+
+Since the two values are greater than 0.05 significance, this means that the data is not significantly different from normal distribution\
+Due to this, we can assume normality
+
+### QQ-polt for normality
+
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+
+ggplot(data = mice2_m) +
+  theme_minimal() +
+  aes(sample = weight_diff) +
+  labs(title = "Weight difference QQ-plot") +
+  stat_qq() + stat_qq_line()
+
+```
 
 ### T-test using base r
 
@@ -92,8 +185,6 @@ after <- mice2$after
 # Computing t-test 
 Mice.test <- t.test(before, after, paired = TRUE)
 
-Mice.test
-
 ```
 
 ### T-test result
@@ -108,59 +199,97 @@ Confidence interval (CI) (-217.1442,-181.8158)
 
 P-value was found to be 1.039e-09, which is less than 0.05, meaning that we reject the null hypothesis The average weight of the mice before the treatment is significantly different from the average weight after the treatment.
 
-## T test using tidymodels package
+## Paired T test using tidymodels package
 
 ![image](image.png)
+
+```{r}
+## Unload rstatix package because it interferes with tidymodels
+detach("package:rstatix", unload = TRUE)
+```
 
 ### Install and Load tidymodels package
 
 ```{r}
 #| echo: true
-# install.packages("tidymodels")
+#| warning: false
+#| message: false
+#install.packages("tidymodels")
 library(tidymodels)
+library(gt)
 ```
 
-### calculate test statistic
+### wrapper function t_test()
 
 ```{r}
 #| echo: true
-## calculate the observed statistic
+
+t_test_example <- mice2 %>% 
+  # Create response variable 
+  mutate(difference = after - before) %>% 
+  t_test(response = difference, mu = 0, alternative = "two-sided") %>% 
+  gt()
+
+t_test_example
+  
+
+```
+
+This result matches the base R result that showed a mean difference of -199.48
+
+### generate the null distribution and the test statistic
+
+1. specify() the response variable
+2. hypothesize() to declare the null hypothesis
+3. generate() the null distribution - bootstrap
+4. calculate() the observed t-statistic
+
+```{r}
+#| echo: true
+
+## Calculate the observed statistic 
 
 observed_statistic <- mice2 %>% 
   mutate(difference = after - before) %>% 
   specify(response = difference) %>% 
   calculate(stat = "mean")
 
-observed_statistic
-```
-This result of -199.48 matches the base R result that showed a mean difference of -199.48
-
-### generate the null distribution and the test statistic
-
-```{r}
-#| echo: true
-null_dist_1_sample <- mice2 %>% 
+## create the simulation null distribution 
+null_distribution <- mice2 %>% 
   mutate(difference = after - before) %>% 
   specify(response = difference) %>% 
-  hypothesize(null = "point", mu = 180) %>% 
+  hypothesize(null = "point", mu = 185) %>% 
   generate(reps = 1000, type = "bootstrap") %>% 
   calculate(stat = "mean") 
 
-visual <- null_dist_1_sample %>% 
-  visualize() +
-  shade_p_value(observed_statistic, direction = "two-sided")
-
-visual
-
+null_distribution %>% 
+  head() %>% 
+  gt()
 
 ```
-### Calculate P-value
+### Visualize the simulation distribution
 ```{r}
 #| echo: true
-p_value_1_sample <- null_dist_1_sample %>% 
-  get_p_value(obs_stat = observed_statistic,
-              direction = "two-sided")
 
-p_value_1_sample
+## visualize 
+
+null_distribution %>% 
+  visualize() +
+  shade_p_value(
+    observed_statistic,
+    direction = "two-sided"
+    )
+
+```
+### Calculate the P -value 
+```{r}
+#| echo: true
+
+## p-value
+p_value <- null_distribution %>% 
+  get_p_value(observed_statistic, direction = "two-sided") %>% 
+  gt()
+
+p_value
 ```
 
