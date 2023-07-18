@@ -305,7 +305,22 @@ Due to this, we can assume normality</p>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>after <span class="ot">&lt;-</span> mice2<span class="sc">$</span>after</span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Computing t-test </span></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>Mice.test <span class="ot">&lt;-</span> <span class="fu">t.test</span>(before, after, <span class="at">paired =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>Mice.test <span class="ot">&lt;-</span> <span class="fu">t.test</span>(before, after, <span class="at">paired =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>Mice.test</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Paired t-test
+
+data:  before and after
+t = -25.546, df = 9, p-value = 1.039e-09
+alternative hypothesis: true mean difference is not equal to 0
+95 percent confidence interval:
+ -217.1442 -181.8158
+sample estimates:
+mean difference 
+        -199.48 </code></pre>
+</div>
 </div>
 </section>
 <section id="t-test-result" class="level3">
@@ -326,46 +341,46 @@ Due to this, we can assume normality</p>
 </figure>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Unload rstatix package because it interferes with tidymodels</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">detach</span>(<span class="st">"package:rstatix"</span>, <span class="at">unload =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Unload rstatix package because it interferes with tidymodels</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">detach</span>(<span class="st">"package:rstatix"</span>, <span class="at">unload =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="install-and-load-tidymodels-package" class="level3">
 <h3 class="anchored" data-anchor-id="install-and-load-tidymodels-package">Install and Load tidymodels package</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("tidymodels")</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("tidymodels")</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="wrapper-function-t_test" class="level3">
 <h3 class="anchored" data-anchor-id="wrapper-function-t_test">wrapper function t_test()</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>t_test_example <span class="ot">&lt;-</span> mice2 <span class="sc">%&gt;%</span> </span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Create response variable </span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">difference =</span> after <span class="sc">-</span> before) <span class="sc">%&gt;%</span> </span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">t_test</span>(<span class="at">response =</span> difference, <span class="at">mu =</span> <span class="dv">0</span>, <span class="at">alternative =</span> <span class="st">"two-sided"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>()</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>t_test_example</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>t_test_example <span class="ot">&lt;-</span> mice2 <span class="sc">%&gt;%</span> </span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Create response variable </span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">difference =</span> after <span class="sc">-</span> before) <span class="sc">%&gt;%</span> </span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">t_test</span>(<span class="at">response =</span> difference, <span class="at">mu =</span> <span class="dv">0</span>, <span class="at">alternative =</span> <span class="st">"two-sided"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>()</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>t_test_example</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 
-<div id="kjpdpmchfs" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#kjpdpmchfs table {
+<div id="rfussvacbi" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#rfussvacbi table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#kjpdpmchfs thead, #kjpdpmchfs tbody, #kjpdpmchfs tfoot, #kjpdpmchfs tr, #kjpdpmchfs td, #kjpdpmchfs th {
+#rfussvacbi thead, #rfussvacbi tbody, #rfussvacbi tfoot, #rfussvacbi tr, #rfussvacbi td, #rfussvacbi th {
   border-style: none;
 }
 
-#kjpdpmchfs p {
+#rfussvacbi p {
   margin: 0;
   padding: 0;
 }
 
-#kjpdpmchfs .gt_table {
+#rfussvacbi .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -391,12 +406,12 @@ Due to this, we can assume normality</p>
   border-left-color: #D3D3D3;
 }
 
-#kjpdpmchfs .gt_caption {
+#rfussvacbi .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#kjpdpmchfs .gt_title {
+#rfussvacbi .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -408,7 +423,7 @@ Due to this, we can assume normality</p>
   border-bottom-width: 0;
 }
 
-#kjpdpmchfs .gt_subtitle {
+#rfussvacbi .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -420,7 +435,7 @@ Due to this, we can assume normality</p>
   border-top-width: 0;
 }
 
-#kjpdpmchfs .gt_heading {
+#rfussvacbi .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -432,13 +447,13 @@ Due to this, we can assume normality</p>
   border-right-color: #D3D3D3;
 }
 
-#kjpdpmchfs .gt_bottom_border {
+#rfussvacbi .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#kjpdpmchfs .gt_col_headings {
+#rfussvacbi .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -453,7 +468,7 @@ Due to this, we can assume normality</p>
   border-right-color: #D3D3D3;
 }
 
-#kjpdpmchfs .gt_col_heading {
+#rfussvacbi .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -473,7 +488,7 @@ Due to this, we can assume normality</p>
   overflow-x: hidden;
 }
 
-#kjpdpmchfs .gt_column_spanner_outer {
+#rfussvacbi .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -485,15 +500,15 @@ Due to this, we can assume normality</p>
   padding-right: 4px;
 }
 
-#kjpdpmchfs .gt_column_spanner_outer:first-child {
+#rfussvacbi .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#kjpdpmchfs .gt_column_spanner_outer:last-child {
+#rfussvacbi .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#kjpdpmchfs .gt_column_spanner {
+#rfussvacbi .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -505,11 +520,11 @@ Due to this, we can assume normality</p>
   width: 100%;
 }
 
-#kjpdpmchfs .gt_spanner_row {
+#rfussvacbi .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#kjpdpmchfs .gt_group_heading {
+#rfussvacbi .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -535,7 +550,7 @@ Due to this, we can assume normality</p>
   text-align: left;
 }
 
-#kjpdpmchfs .gt_empty_group_heading {
+#rfussvacbi .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -550,15 +565,15 @@ Due to this, we can assume normality</p>
   vertical-align: middle;
 }
 
-#kjpdpmchfs .gt_from_md > :first-child {
+#rfussvacbi .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#kjpdpmchfs .gt_from_md > :last-child {
+#rfussvacbi .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#kjpdpmchfs .gt_row {
+#rfussvacbi .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -577,7 +592,7 @@ Due to this, we can assume normality</p>
   overflow-x: hidden;
 }
 
-#kjpdpmchfs .gt_stub {
+#rfussvacbi .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -590,7 +605,7 @@ Due to this, we can assume normality</p>
   padding-right: 5px;
 }
 
-#kjpdpmchfs .gt_stub_row_group {
+#rfussvacbi .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -604,15 +619,15 @@ Due to this, we can assume normality</p>
   vertical-align: top;
 }
 
-#kjpdpmchfs .gt_row_group_first td {
+#rfussvacbi .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#kjpdpmchfs .gt_row_group_first th {
+#rfussvacbi .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#kjpdpmchfs .gt_summary_row {
+#rfussvacbi .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -622,16 +637,16 @@ Due to this, we can assume normality</p>
   padding-right: 5px;
 }
 
-#kjpdpmchfs .gt_first_summary_row {
+#rfussvacbi .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#kjpdpmchfs .gt_first_summary_row.thick {
+#rfussvacbi .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#kjpdpmchfs .gt_last_summary_row {
+#rfussvacbi .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -641,7 +656,7 @@ Due to this, we can assume normality</p>
   border-bottom-color: #D3D3D3;
 }
 
-#kjpdpmchfs .gt_grand_summary_row {
+#rfussvacbi .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -651,7 +666,7 @@ Due to this, we can assume normality</p>
   padding-right: 5px;
 }
 
-#kjpdpmchfs .gt_first_grand_summary_row {
+#rfussvacbi .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -661,7 +676,7 @@ Due to this, we can assume normality</p>
   border-top-color: #D3D3D3;
 }
 
-#kjpdpmchfs .gt_last_grand_summary_row_top {
+#rfussvacbi .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -671,11 +686,11 @@ Due to this, we can assume normality</p>
   border-bottom-color: #D3D3D3;
 }
 
-#kjpdpmchfs .gt_striped {
+#rfussvacbi .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#kjpdpmchfs .gt_table_body {
+#rfussvacbi .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -684,7 +699,7 @@ Due to this, we can assume normality</p>
   border-bottom-color: #D3D3D3;
 }
 
-#kjpdpmchfs .gt_footnotes {
+#rfussvacbi .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -698,7 +713,7 @@ Due to this, we can assume normality</p>
   border-right-color: #D3D3D3;
 }
 
-#kjpdpmchfs .gt_footnote {
+#rfussvacbi .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -707,7 +722,7 @@ Due to this, we can assume normality</p>
   padding-right: 5px;
 }
 
-#kjpdpmchfs .gt_sourcenotes {
+#rfussvacbi .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -721,7 +736,7 @@ Due to this, we can assume normality</p>
   border-right-color: #D3D3D3;
 }
 
-#kjpdpmchfs .gt_sourcenote {
+#rfussvacbi .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -729,63 +744,63 @@ Due to this, we can assume normality</p>
   padding-right: 5px;
 }
 
-#kjpdpmchfs .gt_left {
+#rfussvacbi .gt_left {
   text-align: left;
 }
 
-#kjpdpmchfs .gt_center {
+#rfussvacbi .gt_center {
   text-align: center;
 }
 
-#kjpdpmchfs .gt_right {
+#rfussvacbi .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#kjpdpmchfs .gt_font_normal {
+#rfussvacbi .gt_font_normal {
   font-weight: normal;
 }
 
-#kjpdpmchfs .gt_font_bold {
+#rfussvacbi .gt_font_bold {
   font-weight: bold;
 }
 
-#kjpdpmchfs .gt_font_italic {
+#rfussvacbi .gt_font_italic {
   font-style: italic;
 }
 
-#kjpdpmchfs .gt_super {
+#rfussvacbi .gt_super {
   font-size: 65%;
 }
 
-#kjpdpmchfs .gt_footnote_marks {
+#rfussvacbi .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#kjpdpmchfs .gt_asterisk {
+#rfussvacbi .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#kjpdpmchfs .gt_indent_1 {
+#rfussvacbi .gt_indent_1 {
   text-indent: 5px;
 }
 
-#kjpdpmchfs .gt_indent_2 {
+#rfussvacbi .gt_indent_2 {
   text-indent: 10px;
 }
 
-#kjpdpmchfs .gt_indent_3 {
+#rfussvacbi .gt_indent_3 {
   text-indent: 15px;
 }
 
-#kjpdpmchfs .gt_indent_4 {
+#rfussvacbi .gt_indent_4 {
   text-indent: 20px;
 }
 
-#kjpdpmchfs .gt_indent_5 {
+#rfussvacbi .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -828,43 +843,43 @@ Due to this, we can assume normality</p>
 <li>calculate() the observed t-statistic</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Calculate the observed statistic </span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>observed_statistic <span class="ot">&lt;-</span> mice2 <span class="sc">%&gt;%</span> </span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">difference =</span> after <span class="sc">-</span> before) <span class="sc">%&gt;%</span> </span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">specify</span>(<span class="at">response =</span> difference) <span class="sc">%&gt;%</span> </span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">calculate</span>(<span class="at">stat =</span> <span class="st">"mean"</span>)</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="do">## create the simulation null distribution </span></span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>null_distribution <span class="ot">&lt;-</span> mice2 <span class="sc">%&gt;%</span> </span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">difference =</span> after <span class="sc">-</span> before) <span class="sc">%&gt;%</span> </span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">specify</span>(<span class="at">response =</span> difference) <span class="sc">%&gt;%</span> </span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hypothesize</span>(<span class="at">null =</span> <span class="st">"point"</span>, <span class="at">mu =</span> <span class="dv">185</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">generate</span>(<span class="at">reps =</span> <span class="dv">1000</span>, <span class="at">type =</span> <span class="st">"bootstrap"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">calculate</span>(<span class="at">stat =</span> <span class="st">"mean"</span>) </span>
-<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>null_distribution <span class="sc">%&gt;%</span> </span>
-<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Calculate the observed statistic </span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>observed_statistic <span class="ot">&lt;-</span> mice2 <span class="sc">%&gt;%</span> </span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">difference =</span> after <span class="sc">-</span> before) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">specify</span>(<span class="at">response =</span> difference) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">calculate</span>(<span class="at">stat =</span> <span class="st">"mean"</span>)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="do">## create the simulation null distribution </span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>null_distribution <span class="ot">&lt;-</span> mice2 <span class="sc">%&gt;%</span> </span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">difference =</span> after <span class="sc">-</span> before) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">specify</span>(<span class="at">response =</span> difference) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hypothesize</span>(<span class="at">null =</span> <span class="st">"point"</span>, <span class="at">mu =</span> <span class="dv">185</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">generate</span>(<span class="at">reps =</span> <span class="dv">1000</span>, <span class="at">type =</span> <span class="st">"bootstrap"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">calculate</span>(<span class="at">stat =</span> <span class="st">"mean"</span>) </span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>null_distribution <span class="sc">%&gt;%</span> </span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 
-<div id="ctxkmvpcvv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#ctxkmvpcvv table {
+<div id="lpuikgcmrh" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#lpuikgcmrh table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#ctxkmvpcvv thead, #ctxkmvpcvv tbody, #ctxkmvpcvv tfoot, #ctxkmvpcvv tr, #ctxkmvpcvv td, #ctxkmvpcvv th {
+#lpuikgcmrh thead, #lpuikgcmrh tbody, #lpuikgcmrh tfoot, #lpuikgcmrh tr, #lpuikgcmrh td, #lpuikgcmrh th {
   border-style: none;
 }
 
-#ctxkmvpcvv p {
+#lpuikgcmrh p {
   margin: 0;
   padding: 0;
 }
 
-#ctxkmvpcvv .gt_table {
+#lpuikgcmrh .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -890,12 +905,12 @@ Due to this, we can assume normality</p>
   border-left-color: #D3D3D3;
 }
 
-#ctxkmvpcvv .gt_caption {
+#lpuikgcmrh .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#ctxkmvpcvv .gt_title {
+#lpuikgcmrh .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -907,7 +922,7 @@ Due to this, we can assume normality</p>
   border-bottom-width: 0;
 }
 
-#ctxkmvpcvv .gt_subtitle {
+#lpuikgcmrh .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -919,7 +934,7 @@ Due to this, we can assume normality</p>
   border-top-width: 0;
 }
 
-#ctxkmvpcvv .gt_heading {
+#lpuikgcmrh .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -931,13 +946,13 @@ Due to this, we can assume normality</p>
   border-right-color: #D3D3D3;
 }
 
-#ctxkmvpcvv .gt_bottom_border {
+#lpuikgcmrh .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#ctxkmvpcvv .gt_col_headings {
+#lpuikgcmrh .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -952,7 +967,7 @@ Due to this, we can assume normality</p>
   border-right-color: #D3D3D3;
 }
 
-#ctxkmvpcvv .gt_col_heading {
+#lpuikgcmrh .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -972,7 +987,7 @@ Due to this, we can assume normality</p>
   overflow-x: hidden;
 }
 
-#ctxkmvpcvv .gt_column_spanner_outer {
+#lpuikgcmrh .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -984,15 +999,15 @@ Due to this, we can assume normality</p>
   padding-right: 4px;
 }
 
-#ctxkmvpcvv .gt_column_spanner_outer:first-child {
+#lpuikgcmrh .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ctxkmvpcvv .gt_column_spanner_outer:last-child {
+#lpuikgcmrh .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ctxkmvpcvv .gt_column_spanner {
+#lpuikgcmrh .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1004,11 +1019,11 @@ Due to this, we can assume normality</p>
   width: 100%;
 }
 
-#ctxkmvpcvv .gt_spanner_row {
+#lpuikgcmrh .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#ctxkmvpcvv .gt_group_heading {
+#lpuikgcmrh .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1034,7 +1049,7 @@ Due to this, we can assume normality</p>
   text-align: left;
 }
 
-#ctxkmvpcvv .gt_empty_group_heading {
+#lpuikgcmrh .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1049,15 +1064,15 @@ Due to this, we can assume normality</p>
   vertical-align: middle;
 }
 
-#ctxkmvpcvv .gt_from_md > :first-child {
+#lpuikgcmrh .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ctxkmvpcvv .gt_from_md > :last-child {
+#lpuikgcmrh .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ctxkmvpcvv .gt_row {
+#lpuikgcmrh .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1076,7 +1091,7 @@ Due to this, we can assume normality</p>
   overflow-x: hidden;
 }
 
-#ctxkmvpcvv .gt_stub {
+#lpuikgcmrh .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1089,7 +1104,7 @@ Due to this, we can assume normality</p>
   padding-right: 5px;
 }
 
-#ctxkmvpcvv .gt_stub_row_group {
+#lpuikgcmrh .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1103,15 +1118,15 @@ Due to this, we can assume normality</p>
   vertical-align: top;
 }
 
-#ctxkmvpcvv .gt_row_group_first td {
+#lpuikgcmrh .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#ctxkmvpcvv .gt_row_group_first th {
+#lpuikgcmrh .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#ctxkmvpcvv .gt_summary_row {
+#lpuikgcmrh .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1121,16 +1136,16 @@ Due to this, we can assume normality</p>
   padding-right: 5px;
 }
 
-#ctxkmvpcvv .gt_first_summary_row {
+#lpuikgcmrh .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#ctxkmvpcvv .gt_first_summary_row.thick {
+#lpuikgcmrh .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#ctxkmvpcvv .gt_last_summary_row {
+#lpuikgcmrh .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1140,7 +1155,7 @@ Due to this, we can assume normality</p>
   border-bottom-color: #D3D3D3;
 }
 
-#ctxkmvpcvv .gt_grand_summary_row {
+#lpuikgcmrh .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1150,7 +1165,7 @@ Due to this, we can assume normality</p>
   padding-right: 5px;
 }
 
-#ctxkmvpcvv .gt_first_grand_summary_row {
+#lpuikgcmrh .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1160,7 +1175,7 @@ Due to this, we can assume normality</p>
   border-top-color: #D3D3D3;
 }
 
-#ctxkmvpcvv .gt_last_grand_summary_row_top {
+#lpuikgcmrh .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1170,11 +1185,11 @@ Due to this, we can assume normality</p>
   border-bottom-color: #D3D3D3;
 }
 
-#ctxkmvpcvv .gt_striped {
+#lpuikgcmrh .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#ctxkmvpcvv .gt_table_body {
+#lpuikgcmrh .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1183,7 +1198,7 @@ Due to this, we can assume normality</p>
   border-bottom-color: #D3D3D3;
 }
 
-#ctxkmvpcvv .gt_footnotes {
+#lpuikgcmrh .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1197,7 +1212,7 @@ Due to this, we can assume normality</p>
   border-right-color: #D3D3D3;
 }
 
-#ctxkmvpcvv .gt_footnote {
+#lpuikgcmrh .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1206,7 +1221,7 @@ Due to this, we can assume normality</p>
   padding-right: 5px;
 }
 
-#ctxkmvpcvv .gt_sourcenotes {
+#lpuikgcmrh .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1220,7 +1235,7 @@ Due to this, we can assume normality</p>
   border-right-color: #D3D3D3;
 }
 
-#ctxkmvpcvv .gt_sourcenote {
+#lpuikgcmrh .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1228,63 +1243,63 @@ Due to this, we can assume normality</p>
   padding-right: 5px;
 }
 
-#ctxkmvpcvv .gt_left {
+#lpuikgcmrh .gt_left {
   text-align: left;
 }
 
-#ctxkmvpcvv .gt_center {
+#lpuikgcmrh .gt_center {
   text-align: center;
 }
 
-#ctxkmvpcvv .gt_right {
+#lpuikgcmrh .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ctxkmvpcvv .gt_font_normal {
+#lpuikgcmrh .gt_font_normal {
   font-weight: normal;
 }
 
-#ctxkmvpcvv .gt_font_bold {
+#lpuikgcmrh .gt_font_bold {
   font-weight: bold;
 }
 
-#ctxkmvpcvv .gt_font_italic {
+#lpuikgcmrh .gt_font_italic {
   font-style: italic;
 }
 
-#ctxkmvpcvv .gt_super {
+#lpuikgcmrh .gt_super {
   font-size: 65%;
 }
 
-#ctxkmvpcvv .gt_footnote_marks {
+#lpuikgcmrh .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#ctxkmvpcvv .gt_asterisk {
+#lpuikgcmrh .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#ctxkmvpcvv .gt_indent_1 {
+#lpuikgcmrh .gt_indent_1 {
   text-indent: 5px;
 }
 
-#ctxkmvpcvv .gt_indent_2 {
+#lpuikgcmrh .gt_indent_2 {
   text-indent: 10px;
 }
 
-#ctxkmvpcvv .gt_indent_3 {
+#lpuikgcmrh .gt_indent_3 {
   text-indent: 15px;
 }
 
-#ctxkmvpcvv .gt_indent_4 {
+#lpuikgcmrh .gt_indent_4 {
   text-indent: 20px;
 }
 
-#ctxkmvpcvv .gt_indent_5 {
+#lpuikgcmrh .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1298,17 +1313,17 @@ Due to this, we can assume normality</p>
   </thead>
   <tbody class="gt_table_body">
     <tr><td headers="replicate" class="gt_row gt_right">1</td>
-<td headers="stat" class="gt_row gt_right">193.06</td></tr>
+<td headers="stat" class="gt_row gt_right">191.37</td></tr>
     <tr><td headers="replicate" class="gt_row gt_right">2</td>
-<td headers="stat" class="gt_row gt_right">187.79</td></tr>
+<td headers="stat" class="gt_row gt_right">181.16</td></tr>
     <tr><td headers="replicate" class="gt_row gt_right">3</td>
-<td headers="stat" class="gt_row gt_right">185.91</td></tr>
+<td headers="stat" class="gt_row gt_right">186.19</td></tr>
     <tr><td headers="replicate" class="gt_row gt_right">4</td>
-<td headers="stat" class="gt_row gt_right">194.97</td></tr>
+<td headers="stat" class="gt_row gt_right">193.56</td></tr>
     <tr><td headers="replicate" class="gt_row gt_right">5</td>
-<td headers="stat" class="gt_row gt_right">197.56</td></tr>
+<td headers="stat" class="gt_row gt_right">187.65</td></tr>
     <tr><td headers="replicate" class="gt_row gt_right">6</td>
-<td headers="stat" class="gt_row gt_right">175.88</td></tr>
+<td headers="stat" class="gt_row gt_right">191.85</td></tr>
   </tbody>
   
   
@@ -1320,14 +1335,14 @@ Due to this, we can assume normality</p>
 <section id="visualize-the-simulation-distribution" class="level3">
 <h3 class="anchored" data-anchor-id="visualize-the-simulation-distribution">Visualize the simulation distribution</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="do">## visualize </span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>null_distribution <span class="sc">%&gt;%</span> </span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">visualize</span>() <span class="sc">+</span></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">shade_p_value</span>(</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    observed_statistic,</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">direction =</span> <span class="st">"two-sided"</span></span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="do">## visualize </span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>null_distribution <span class="sc">%&gt;%</span> </span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">visualize</span>() <span class="sc">+</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">shade_p_value</span>(</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    observed_statistic,</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">direction =</span> <span class="st">"two-sided"</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="one_sample_t_test_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -1336,31 +1351,31 @@ Due to this, we can assume normality</p>
 <section id="calculate-the-p--value" class="level3">
 <h3 class="anchored" data-anchor-id="calculate-the-p--value">Calculate the P -value</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="do">## p-value</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>p_value <span class="ot">&lt;-</span> null_distribution <span class="sc">%&gt;%</span> </span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_p_value</span>(observed_statistic, <span class="at">direction =</span> <span class="st">"two-sided"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>()</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>p_value</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="do">## p-value</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>p_value <span class="ot">&lt;-</span> null_distribution <span class="sc">%&gt;%</span> </span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_p_value</span>(observed_statistic, <span class="at">direction =</span> <span class="st">"two-sided"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>()</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>p_value</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 
-<div id="aclzsdebbg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#aclzsdebbg table {
+<div id="idtdebdcjr" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#idtdebdcjr table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#aclzsdebbg thead, #aclzsdebbg tbody, #aclzsdebbg tfoot, #aclzsdebbg tr, #aclzsdebbg td, #aclzsdebbg th {
+#idtdebdcjr thead, #idtdebdcjr tbody, #idtdebdcjr tfoot, #idtdebdcjr tr, #idtdebdcjr td, #idtdebdcjr th {
   border-style: none;
 }
 
-#aclzsdebbg p {
+#idtdebdcjr p {
   margin: 0;
   padding: 0;
 }
 
-#aclzsdebbg .gt_table {
+#idtdebdcjr .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1386,12 +1401,12 @@ Due to this, we can assume normality</p>
   border-left-color: #D3D3D3;
 }
 
-#aclzsdebbg .gt_caption {
+#idtdebdcjr .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#aclzsdebbg .gt_title {
+#idtdebdcjr .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1403,7 +1418,7 @@ Due to this, we can assume normality</p>
   border-bottom-width: 0;
 }
 
-#aclzsdebbg .gt_subtitle {
+#idtdebdcjr .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1415,7 +1430,7 @@ Due to this, we can assume normality</p>
   border-top-width: 0;
 }
 
-#aclzsdebbg .gt_heading {
+#idtdebdcjr .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1427,13 +1442,13 @@ Due to this, we can assume normality</p>
   border-right-color: #D3D3D3;
 }
 
-#aclzsdebbg .gt_bottom_border {
+#idtdebdcjr .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#aclzsdebbg .gt_col_headings {
+#idtdebdcjr .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1448,7 +1463,7 @@ Due to this, we can assume normality</p>
   border-right-color: #D3D3D3;
 }
 
-#aclzsdebbg .gt_col_heading {
+#idtdebdcjr .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1468,7 +1483,7 @@ Due to this, we can assume normality</p>
   overflow-x: hidden;
 }
 
-#aclzsdebbg .gt_column_spanner_outer {
+#idtdebdcjr .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1480,15 +1495,15 @@ Due to this, we can assume normality</p>
   padding-right: 4px;
 }
 
-#aclzsdebbg .gt_column_spanner_outer:first-child {
+#idtdebdcjr .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#aclzsdebbg .gt_column_spanner_outer:last-child {
+#idtdebdcjr .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#aclzsdebbg .gt_column_spanner {
+#idtdebdcjr .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1500,11 +1515,11 @@ Due to this, we can assume normality</p>
   width: 100%;
 }
 
-#aclzsdebbg .gt_spanner_row {
+#idtdebdcjr .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#aclzsdebbg .gt_group_heading {
+#idtdebdcjr .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1530,7 +1545,7 @@ Due to this, we can assume normality</p>
   text-align: left;
 }
 
-#aclzsdebbg .gt_empty_group_heading {
+#idtdebdcjr .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1545,15 +1560,15 @@ Due to this, we can assume normality</p>
   vertical-align: middle;
 }
 
-#aclzsdebbg .gt_from_md > :first-child {
+#idtdebdcjr .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#aclzsdebbg .gt_from_md > :last-child {
+#idtdebdcjr .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#aclzsdebbg .gt_row {
+#idtdebdcjr .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1572,7 +1587,7 @@ Due to this, we can assume normality</p>
   overflow-x: hidden;
 }
 
-#aclzsdebbg .gt_stub {
+#idtdebdcjr .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1585,7 +1600,7 @@ Due to this, we can assume normality</p>
   padding-right: 5px;
 }
 
-#aclzsdebbg .gt_stub_row_group {
+#idtdebdcjr .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1599,15 +1614,15 @@ Due to this, we can assume normality</p>
   vertical-align: top;
 }
 
-#aclzsdebbg .gt_row_group_first td {
+#idtdebdcjr .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#aclzsdebbg .gt_row_group_first th {
+#idtdebdcjr .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#aclzsdebbg .gt_summary_row {
+#idtdebdcjr .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1617,16 +1632,16 @@ Due to this, we can assume normality</p>
   padding-right: 5px;
 }
 
-#aclzsdebbg .gt_first_summary_row {
+#idtdebdcjr .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#aclzsdebbg .gt_first_summary_row.thick {
+#idtdebdcjr .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#aclzsdebbg .gt_last_summary_row {
+#idtdebdcjr .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1636,7 +1651,7 @@ Due to this, we can assume normality</p>
   border-bottom-color: #D3D3D3;
 }
 
-#aclzsdebbg .gt_grand_summary_row {
+#idtdebdcjr .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1646,7 +1661,7 @@ Due to this, we can assume normality</p>
   padding-right: 5px;
 }
 
-#aclzsdebbg .gt_first_grand_summary_row {
+#idtdebdcjr .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1656,7 +1671,7 @@ Due to this, we can assume normality</p>
   border-top-color: #D3D3D3;
 }
 
-#aclzsdebbg .gt_last_grand_summary_row_top {
+#idtdebdcjr .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1666,11 +1681,11 @@ Due to this, we can assume normality</p>
   border-bottom-color: #D3D3D3;
 }
 
-#aclzsdebbg .gt_striped {
+#idtdebdcjr .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#aclzsdebbg .gt_table_body {
+#idtdebdcjr .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1679,7 +1694,7 @@ Due to this, we can assume normality</p>
   border-bottom-color: #D3D3D3;
 }
 
-#aclzsdebbg .gt_footnotes {
+#idtdebdcjr .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1693,7 +1708,7 @@ Due to this, we can assume normality</p>
   border-right-color: #D3D3D3;
 }
 
-#aclzsdebbg .gt_footnote {
+#idtdebdcjr .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1702,7 +1717,7 @@ Due to this, we can assume normality</p>
   padding-right: 5px;
 }
 
-#aclzsdebbg .gt_sourcenotes {
+#idtdebdcjr .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1716,7 +1731,7 @@ Due to this, we can assume normality</p>
   border-right-color: #D3D3D3;
 }
 
-#aclzsdebbg .gt_sourcenote {
+#idtdebdcjr .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1724,63 +1739,63 @@ Due to this, we can assume normality</p>
   padding-right: 5px;
 }
 
-#aclzsdebbg .gt_left {
+#idtdebdcjr .gt_left {
   text-align: left;
 }
 
-#aclzsdebbg .gt_center {
+#idtdebdcjr .gt_center {
   text-align: center;
 }
 
-#aclzsdebbg .gt_right {
+#idtdebdcjr .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#aclzsdebbg .gt_font_normal {
+#idtdebdcjr .gt_font_normal {
   font-weight: normal;
 }
 
-#aclzsdebbg .gt_font_bold {
+#idtdebdcjr .gt_font_bold {
   font-weight: bold;
 }
 
-#aclzsdebbg .gt_font_italic {
+#idtdebdcjr .gt_font_italic {
   font-style: italic;
 }
 
-#aclzsdebbg .gt_super {
+#idtdebdcjr .gt_super {
   font-size: 65%;
 }
 
-#aclzsdebbg .gt_footnote_marks {
+#idtdebdcjr .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#aclzsdebbg .gt_asterisk {
+#idtdebdcjr .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#aclzsdebbg .gt_indent_1 {
+#idtdebdcjr .gt_indent_1 {
   text-indent: 5px;
 }
 
-#aclzsdebbg .gt_indent_2 {
+#idtdebdcjr .gt_indent_2 {
   text-indent: 10px;
 }
 
-#aclzsdebbg .gt_indent_3 {
+#idtdebdcjr .gt_indent_3 {
   text-indent: 15px;
 }
 
-#aclzsdebbg .gt_indent_4 {
+#idtdebdcjr .gt_indent_4 {
   text-indent: 20px;
 }
 
-#aclzsdebbg .gt_indent_5 {
+#idtdebdcjr .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1792,7 +1807,7 @@ Due to this, we can assume normality</p>
     </tr>
   </thead>
   <tbody class="gt_table_body">
-    <tr><td headers="p_value" class="gt_row gt_right">0.056</td></tr>
+    <tr><td headers="p_value" class="gt_row gt_right">0.058</td></tr>
   </tbody>
   
   

@@ -185,6 +185,8 @@ after <- mice2$after
 # Computing t-test 
 Mice.test <- t.test(before, after, paired = TRUE)
 
+Mice.test
+
 ```
 
 ### T-test result
