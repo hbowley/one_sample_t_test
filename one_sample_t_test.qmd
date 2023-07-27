@@ -8,18 +8,28 @@ toc: true
 editor: visual
 theme: lux
 ---
+## One Sample t-Test
+-   One sample paired t-test is used to compare the means between two related groups.
+- Used to determine if the mean difference between the two groups is 0
+- This statistical test is used in case control studies where there is a control group and a treatment group
+
 
 ## One Sample Paired t-test
 
--   One sample paired t-test is used to compare the means between two related groups.
--   Typically used to determine if the mean difference between the two groups is 0
--   Since this is a paired t-test, this means that each subject is measured twice
-    -   Which makes a paired observation
--   This type of statistical test is usually used in case-control or repeated measures studies
+- Each subject is measured twice which makes it a paired observation
+-   This type of statistical test is usually used in repeated measures studies
 
 #### T-test statistic
 
-$$t=\frac{m}{\frac{s}{\sqrt{n}}}$$
+$$t=\frac{m}{\frac{s}{\sqrt{n}}}$$  
+
+- t: test statistic  
+
+- m: sample mean  
+
+- s : standard deviation  
+
+- n : sample size
 
 ### Install packages
 
